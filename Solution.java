@@ -22,38 +22,49 @@ class Solution {
                 ++x;
             }
         }
+        in.close();
         // System.out.println(dump);
-        PathCalculator pc = new PathCalculator(walls);
+        PathCalculator pc = new PathCalculator(walls, M, N);
 
-        System.out.println(pc.numberOfPaths(M, N));
+        System.out.println(pc.numberOfPaths(0, 0));
     }
 }
 
 class PathCalculator {
     private final WallMap walls;
+    private final int m;
+    private final int n;
 
-    public PathCalculator(WallMap walls) {
+    public PathCalculator(WallMap walls, int m, int n) {
         this.walls = walls;
+        this.m = m;
+        this.n = m;
     }
 
-    public int numberOfPaths(int m, int n) {
+    public int numberOfPaths(int x, int y) {
         // if start point or end point is a wall, then no path exists
-        if (walls.isWall(0, 0) || walls.isWall(n - 1, m - 1)) {
+        if (walls.isWall(x, y) || walls.isWall(n - 1, m - 1)) {
             return 0;
         }
 
-        return recNumberOfPaths(m, n);
+       return recNumberOfPaths(x, y);
     }
 
-    private int recNumberOfPaths(int m, int n) 
+    private int recNumberOfPaths(int x, int y) 
     {
-        if (walls.isWall(m - 1, n - 1))
+        // end of the map exceeded
+        if (x == m || y == n)
             return 0;
 
-        if (m == 1 || n == 1) 
+        // map fully explored
+        if (x == n - 1 && y == m - 1)
             return 1;
 
-        return recNumberOfPaths(m - 1, n) + recNumberOfPaths(m, n - 1);
+        // this is a wall, don't count this path as a valid one
+        if (walls.isWall(x, y))
+            return 0;
+
+        return recNumberOfPaths(x + 1, y) + recNumberOfPaths(x, y + 1);
     }
 }
 
