@@ -47,6 +47,9 @@ class PathCalculator {
 
     private int recNumberOfPaths(int m, int n) 
     {
+        if (walls.isWall(m - 1, n - 1))
+            return 0;
+
         if (m == 1 || n == 1) 
             return 1;
 
