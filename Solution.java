@@ -41,14 +41,26 @@ class PathCalculator {
         if (walls.isWall(x, y) || walls.isWall(n - 1, m - 1))
             return 0;
 
-        return recNumberOfPaths(x, y);
+        int[][] cache = new int[n][m];
+        // fill cache with "not cached" value
+        for (int b = 0; b < m; ++b) {
+            for (int a = 0; a < n; ++a) {
+                cache[a][b] = -1;
+            }
+        }
+
+        return recNumberOfPaths(x, y, cache);
     }
 
-    private int recNumberOfPaths(int x, int y) 
+    private int recNumberOfPaths(int x, int y, int[][] cache)
     {
         // end of the map exceeded
         if (x == m || y == n)
             return 0;
+
+        // this is cached, so here we go
+        if (cache[x][y] != -1)
+            return cache[x][y];
 
         // map fully explored
         if (x == n - 1 && y == m - 1)
@@ -58,7 +70,9 @@ class PathCalculator {
         if (walls.isWall(x, y))
             return 0;
 
-        return recNumberOfPaths(x + 1, y) + recNumberOfPaths(x, y + 1);
+        // this is not cached, so let us cache it
+        cache[x][y] = recNumberOfPaths(x + 1, y, cache) + recNumberOfPaths(x, y + 1, cache);
+        return cache[x][y];
     }
 }
 
