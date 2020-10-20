@@ -1,6 +1,4 @@
 import java.util.*;
-import java.io.*;
-import java.math.*;
 
 class Solution {
     public static void main(String args[]) {
@@ -25,11 +23,20 @@ class Solution {
             }
         }
         // System.out.println(dump);
+        PathCalculator pc = new PathCalculator(walls);
 
-        System.out.println(numberOfPaths(M, N, walls));
+        System.out.println(pc.numberOfPaths(M, N));
+    }
+}
+
+class PathCalculator {
+    private final WallMap walls;
+
+    public PathCalculator(WallMap walls) {
+        this.walls = walls;
     }
 
-    public static int numberOfPaths(int m, int n, WallMap walls) {
+    public int numberOfPaths(int m, int n) {
         // if start point or end point is a wall, then no path exists
         if (walls.isWall(0, 0) || walls.isWall(n - 1, m - 1)) {
             return 0;
@@ -38,7 +45,7 @@ class Solution {
         return recNumberOfPaths(m, n);
     }
 
-    private static int recNumberOfPaths(int m, int n) 
+    private int recNumberOfPaths(int m, int n) 
     {
         if (m == 1 || n == 1) 
             return 1;
@@ -48,7 +55,7 @@ class Solution {
 }
 
 class WallMap {
-    private Map<String, Boolean> data;
+    private final Map<String, Boolean> data;
 
     public WallMap() {
         data = new HashMap<>();
