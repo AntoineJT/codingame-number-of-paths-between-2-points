@@ -3,17 +3,13 @@ class WallMap:
         self._data = {}
 
     def get(self, x, y) -> int:
-        return self._data.get(self._getkey(x, y))
+        return self._data.get((x, y))
 
     def put(self, x, y, val: int) -> None:
-        self._data[self._getkey(x, y)] = val
+        self._data[(x, y)] = val
 
     def is_wall(self, x, y) -> bool:
         return int(self.get(x, y)) == 1
-
-    @staticmethod
-    def _getkey(x, y) -> str:
-        return f"{x},{y}"
 
 class PathCalculator:
     def __init__(self, walls: WallMap, m: int, n: int):
@@ -72,4 +68,3 @@ for y in range(m):
 
 pc = PathCalculator(wallmap, m, n)
 print(pc.number_of_paths(0, 0))
-
