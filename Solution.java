@@ -11,16 +11,16 @@ class Solution {
         }
         
         // populate walls map
-        WallMap walls = new WallMap();
+        WallMap walls = new WallMap(M, N);
         for (int y = 0; y < M; ++y) {
             String ROW = in.nextLine();
             for (int x = 0; x < N; ++x) {
-                walls.put(x, y, ROW.charAt(x) == '1');
+                walls.put(x, y, ROW.charAt(x));
             }
         }
         in.close();
         
-        PathCalculator pc = new PathCalculator(walls, M, N);
+        PathCalculator pc = new PathCalculator(walls);
         System.out.println(pc.numberOfPaths(0, 0));
     }
 }
@@ -30,10 +30,10 @@ class PathCalculator {
     private final int m;
     private final int n;
 
-    public PathCalculator(WallMap walls, int m, int n) {
+    public PathCalculator(WallMap walls) {
         this.walls = walls;
-        this.m = m;
-        this.n = m;
+        this.m = walls.getM();
+        this.n = walls.getN();
     }
 
     public int numberOfPaths(int x, int y) {
@@ -85,25 +85,33 @@ class PathCalculator {
 }
 
 class WallMap {
-    private final Map<String, Boolean> data;
+    private final char[][] data;
+    private final int m;
+    private final int n;
 
-    public WallMap() {
-        data = new HashMap<>();
+    public WallMap(int m, int n) {
+        this.m = m;
+        this.n = n;
+        data = new char[n][m];
     }
 
-    public void put(int x, int y, boolean value) {
-        data.put(getWallKey(x, y), value);
+    public void put(int x, int y, char value) {
+        data[x][y] = value;
     }
 
     public boolean isWall(int x, int y) {
-        return get(x, y);
+        return get(x, y) == '1';
     }
 
-    public boolean get(int x, int y) {
-        return data.get(getWallKey(x, y));
+    public char get(int x, int y) {
+        return data[x][y];
     }
 
-    private static String getWallKey(int x, int y) {
-        return x + "," + y;
+    public int getN() {
+        return n;
+    }
+
+    public int getM() {
+        return m;
     }
 }
