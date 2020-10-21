@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdbool.h>
 
 static bool is_cached(int val) {
@@ -52,10 +50,9 @@ int number_of_paths(const int m, const int n, char const walls[n][m], int x, int
 
 int main()
 {
-    int M;
-    scanf("%d", &M);
-    int N;
-    scanf("%d", &N); fgetc(stdin);
+    int M, N;
+    scanf("%d%d", &M, &N);
+    fgetc(stdin);
     
     char walls[N][M]; // enjoy VLA
     for (int y = 0; y < M; ++y) {
