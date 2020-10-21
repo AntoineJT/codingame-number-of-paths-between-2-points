@@ -1,6 +1,3 @@
-import sys
-import math
-
 class WallMap:
     def __init__(self):
         self._data = {}
@@ -11,7 +8,7 @@ class WallMap:
     def put(self, x, y, val: int) -> None:
         self._data[self._getkey(x, y)] = val
 
-    def iswall(self, x, y) -> bool:
+    def is_wall(self, x, y) -> bool:
         return int(self.get(x, y)) == 1
 
     @staticmethod
@@ -24,10 +21,10 @@ class PathCalculator:
         self._m = m
         self._n = n
 
-    def numberOfPaths(self, x: int, y: int) -> int:
+    def number_of_paths(self, x: int, y: int) -> int:
         # if start point or end point is a wall, then no path exists
-        if self._walls.iswall(x, y) \
-            or self._walls.iswall(self._n - 1, self._m - 1):
+        if self._walls.is_wall(x, y) \
+            or self._walls.is_wall(self._n - 1, self._m - 1):
             return 0
         
         # pre-compute some values and feed cache with it
@@ -37,13 +34,13 @@ class PathCalculator:
             for b in range(m):
                 # if it is a wall, don't count this path as a valid one (0)
                 # else mark it as "uncached for now" (-1)
-                cache[a][b] = 0 if self._walls.iswall(a, b) else -1
+                cache[a][b] = 0 if self._walls.is_wall(a, b) else -1
         # map fully explored
         cache[n - 1][m - 1] = 1
 
-        return self._recNumberOfPaths(x, y, cache)
+        return self._rec_number_of_paths(x, y, cache)
 
-    def _recNumberOfPaths(self, x, y, cache) -> int:
+    def _rec_number_of_paths(self, x, y, cache) -> int:
         """
         This function is broken when called with an empty (filled with -1) cache
         It must be called by numberOfPaths with precomputed cache
@@ -58,7 +55,8 @@ class PathCalculator:
             return cache[x][y]
 
         # this is not cached, so let us cache it
-        cache[x][y] = self._recNumberOfPaths(x + 1, y, cache) + self._recNumberOfPaths(x, y + 1, cache)
+        cache[x][y] = self._rec_number_of_paths(x + 1, y, cache) \
+                    + self._rec_number_of_paths(x, y + 1, cache)
         return cache[x][y]
 
 
@@ -73,4 +71,5 @@ for y in range(m):
         wallmap.put(x, y, row[x])
 
 pc = PathCalculator(wallmap, m, n)
-print(pc.numberOfPaths(0, 0))
+print(pc.number_of_paths(0, 0))
+
