@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-static bool is_cached(int val) {
-    return val != -1;
-}
+#define UNCACHED -1
 
 /*
     This function is broken when called with an empty (filled with -1) cache
@@ -15,7 +13,7 @@ static int rec_number_of_paths(const int m, const int n, char const walls[n][m],
         return 0;
 
     // this is cached, so here we go
-    if (is_cached(cache[x][y]))
+    if (cache[x][y] != UNCACHED)
         return cache[x][y];
 
     // this is uncached, so let us cache it
@@ -39,7 +37,7 @@ int number_of_paths(const int m, const int n, char const walls[n][m], int x, int
         for (int b = 0; b < m; ++b) {
             // if it is a wall, don't count this path as a valid one (0)
             // else mark it as "uncached for now" (-1)
-            cache[a][b] = is_wall(walls[a][b]) ? 0 : -1;
+            cache[a][b] = is_wall(walls[a][b]) ? 0 : UNCACHED;
         }
     }
     // map fully explored
